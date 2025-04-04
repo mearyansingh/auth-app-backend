@@ -16,11 +16,30 @@ const app = express()
 const allowedOrigins = ['http://localhost:5173', 'https://mernapp-auth.vercel.app']
 
 //middleware
-app.use(cors({ origin: allowedOrigins, credentials: true })) //send the cookie in the response
+app.use(cors({
+    origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+// app.use(cors({ origin: allowedOrigins, credentials: true })) //send the cookie in the response
+app.options('*', cors()); // Preflight before any routes
 app.use(cookieParser())
 // Add body-parsing middleware
 app.use(express.json()) //It parses incoming requests with JSON payloads and is based on body-parser
 // app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+    console.log('Request from origin:', req.headers.origin);
+    next();
+});
+
 //API endpoints
 app.get('/', (req, res) => {
     res.send('Auth app running')
