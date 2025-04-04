@@ -28,8 +28,8 @@ app.use(cors({
     },
     credentials: true
 }));
-// app.use(cors({ origin: allowedOrigins, credentials: true })) //send the cookie in the response
-app.options('*', cors()); // Preflight before any routes
+app.use(cors({ origin: allowedOrigins, credentials: true })) //send the cookie in the response
+// app.options('*', cors()); // Preflight before any routes
 app.use(cookieParser())
 // Add body-parsing middleware
 app.use(express.json()) //It parses incoming requests with JSON payloads and is based on body-parser
