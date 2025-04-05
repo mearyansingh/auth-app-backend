@@ -5,8 +5,9 @@ import cookieParser from 'cookie-parser'
 import 'dotenv/config'
 import authRouter from './routes/authRoutes.js'
 import userRouter from './routes/userRoutes.js';
-// import connectDB from './config/db.js';
-// connectDB()
+import connectDB from './config/db.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
+connectDB()
 
 //initialize express app
 const app = express()
@@ -18,19 +19,18 @@ app.use(cors({
     credentials: true // enable cookies
 }))
 app.use(cookieParser())
-// Add body-parsing middleware
-app.use(express.json()) //It parses incoming requests with JSON payloads and is based on body-parser
-// app.use(express.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-    console.log('Request from origin:', req.headers.origin);
-    next();
-});
+app.use(express.json())//parse row json //body-parsing middleware - It parses incoming requests with JSON payloads and is based on body-parser
+// when your application needs to receive and process JSON data in the request body
+app.use(express.urlencoded({ extended: true }));
 
 //API endpoints
 app.get('/', (req, res) => {
     res.send('Welcome! to Auth app.')
 })
+
+//error handling middleware
+// app.use(notFound);
+// app.use(errorHandler);
 
 //routes
 app.use('/api/auth', authRouter)
@@ -41,16 +41,16 @@ app.use('/api/user', userRouter)
  * This function establishes a connection to the MongoDB database using the URL specified
  * in the environment variables. It also sets up a simple GET route for the root path ('/').
  */
-async function main() {
-    await mongoose.connect(process.env.MONGODB_URI);
-    app.get('/', (req, res) => {
-        res.send('Welcome to BookShelf!')
-    })
-}
-main().then(() => console.log("mongodb connected successfully!")).catch((err) => {
-    console.log("Failed to connect to MongoDB, retrying in 5 seconds...", err)
-    setTimeout(main, 5000);
-});
+// async function main() {
+//     await mongoose.connect(process.env.MONGODB_URI);
+//     app.get('/', (req, res) => {
+//         res.send('Welcome! to Auth app...')
+//     })
+// }
+// main().then(() => console.log("mongodb connected successfully!")).catch((err) => {
+//     console.log("Failed to connect to MongoDB, retrying in 5 seconds...", err)
+//     setTimeout(main, 5000);
+// });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

@@ -4,6 +4,7 @@ import userAuth from '../middleware/userAuth.js';
 
 const authRouter = express.Router();
 
+// /api/auth/register
 authRouter.post('/register', register)
 authRouter.post('/login', login)
 authRouter.post('/logout', logout)
