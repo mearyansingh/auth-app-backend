@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 
 const userAuth = async (req, res, next) => {
-    const { token } = req.cookies;
+    const { token } = req?.cookies;
 
     if (!token) {
-        return res.json({ success: false, message: 'Access denied. No token provided.' })
+        return res.status(401).json({ success: false, message: 'Access denied. No token provided.' })
     }
 
     // Verify token and get user ID from it. If token is invalid, return 401 Unauthorized error.
