@@ -5,8 +5,8 @@ import { getUserData, getUserProfile, updateUserProfile } from '../controllers/u
 const userRouter = express.Router()
 
 // '/api/user'
-userRouter.get('/data', userAuth, getUserData)
 //User profile routes
+// userRouter.get('/data', userAuth, getUserData)
 userRouter.get('/profile', userAuth, getUserProfile).put('/profile', userAuth, updateUserProfile)
 
 export default userRouter

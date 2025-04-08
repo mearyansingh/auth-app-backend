@@ -59,7 +59,7 @@ export const register = async (req, res) => {
     return res.status(201).json({ // Use 201 Created status code for successful resource creation
       success: true,
       message: 'User registered successfully!',
-      user: {
+      userData: {
         id: newUser._id,
         name: newUser.name,
         email: newUser.email,
@@ -106,7 +106,7 @@ export const login = async (req, res) => {
     // 6. Set HTTP-only Cookie
     res.cookie('token', token, cookieOptions);
     // 7. Return User Data (Optional but good practice)
-    return res.status(200).json({ success: true, message: 'Login successful!', user: { id: user?._id, name: user.name, email: user.email } });
+    return res.status(200).json({ success: true, message: 'Login successful!', userData: { id: user?._id, name: user.name, email: user.email, isAccountVerified: user.isAccountVerified } });
   } catch (error) {
     console.error('Login error:', error);
     return res.status(500).json({ success: false, message: 'Login failed. Please try again later.' });
@@ -178,7 +178,7 @@ export const verifyEmail = async (req, res) => {
     user.verifyOtpExpireAt = 0;
     user.isAccountVerified = true;
     await user.save();
-    return res.json({ success: true, message: 'Email verified successfully!' });
+    return res.json({ success: true, message: 'Email verified successfully!', userData: { id: user?._id, name: user.name, email: user.email, isAccountVerified: user.isAccountVerified } });
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
   }
@@ -238,15 +238,15 @@ export const resetPassword = async (req, res) => {
     const user = await userModel.findOne({ email })
 
     if (!user) {
-      return res.json({ success: false, message: 'User not found.' });
+      return res.json({ success: false, message: 'User not found!' });
     }
 
     if (user.resetOtp === '' || user.resetOtp !== otp) {
-      return res.json({ success: false, message: 'Incorrect OTP.' });
+      return res.json({ success: false, message: 'Incorrect OTP!' });
     }
 
     if (user.resetOtpExpireAt <= Date.now()) {
-      return res.json({ success: false, message: 'OTP expired.' });
+      return res.json({ success: false, message: 'OTP expired!' });
     }
 
     user.resetOtp = '';

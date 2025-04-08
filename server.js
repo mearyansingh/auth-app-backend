@@ -18,10 +18,6 @@ app.use(cors({
     origin: ['http://localhost:5173', 'https://mernapp-auth.vercel.app'], //send the cookie in the response
     credentials: true // enable cookies
 }))
-// app.options('*', cors({
-//     origin: ['http://localhost:5173', 'https://mernapp-auth.vercel.app'],
-//     credentials: true
-// }));
 
 app.use(cookieParser())
 app.use(express.json())//parse row json //body-parsing middleware - It parses incoming requests with JSON payloads and is based on body-parser
@@ -32,11 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.send('Welcome! to Auth app.')
 })
-
-// app.use((req, res, next) => {
-//     console.log(`${req.method} request from ${req.headers.origin} to ${req.url}`);
-//     next();
-// });
 
 //error handling middleware
 // app.use(notFound);

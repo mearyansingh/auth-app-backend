@@ -11,7 +11,7 @@ authRouter.post('/logout', logout)
 authRouter.post('/send-verify-otp', userAuth, sendVerifyOtp)
 authRouter.post('/verify-account', userAuth, verifyEmail)
 //get user authenticated state
-authRouter.get('/is-auth', userAuth, isAuthenticated)
+authRouter.get('/is-auth', userAuth, isAuthenticated)//Context Based approach
 //Password reset with OTP
 authRouter.post('/send-reset-otp', sendResetOtp)
 authRouter.post('/reset-password', resetPassword)
