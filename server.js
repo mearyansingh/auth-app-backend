@@ -1,13 +1,13 @@
-import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import 'dotenv/config'
+import express from 'express'
 import authRouter from './routes/authRoutes.js'
 import userRouter from './routes/userRoutes.js';
-import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
-connectDB()
+// import connectDB from './config/db.js';
+// connectDB()
 
 //initialize express app
 const app = express()
@@ -24,11 +24,6 @@ app.use(express.json())//parse row json //body-parsing middleware - It parses in
 // when your application needs to receive and process JSON data in the request body
 app.use(express.urlencoded({ extended: true }));
 
-//API endpoints
-app.get('/', (req, res) => {
-    res.send('Welcome! to Auth app.')
-})
-
 //error handling middleware
 // app.use(notFound);
 // app.use(errorHandler);
@@ -42,16 +37,16 @@ app.use('/api/user', userRouter)
  * This function establishes a connection to the MongoDB database using the URL specified
  * in the environment variables. It also sets up a simple GET route for the root path ('/').
  */
-// async function main() {
-//     await mongoose.connect(process.env.MONGODB_URI);
-//     app.get('/', (req, res) => {
-//         res.send('Welcome! to Auth app...')
-//     })
-// }
-// main().then(() => console.log("mongodb connected successfully!")).catch((err) => {
-//     console.log("Failed to connect to MongoDB, retrying in 5 seconds...", err)
-//     setTimeout(main, 5000);
-// });
+async function main() {
+    await mongoose.connect(`${process.env.MONGODB_URI}/auth-app`);
+    app.get('/', (req, res) => {
+        res.send('Welcome! to Auth app...')
+    })
+}
+main().then(() => console.log("mongodb connected successfully!")).catch((err) => {
+    console.log("Failed to connect to MongoDB, retrying in 5 seconds...", err)
+    setTimeout(main, 5000);
+});
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
