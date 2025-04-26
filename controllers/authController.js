@@ -48,7 +48,8 @@ export const register = async (req, res) => {
         from: process.env.SENDER_EMAIL,
         to: email,
         subject: 'Welcome to Auth App',
-        text: `Welcome to Auth App, ${name}!`,
+        // text: `Welcome to Auth App, ${name}!`,
+        html: WELCOME_TEMPLATE.replace("{{name}}", name)
       }
       await transporter.sendMail(mailOptions);
     } catch (error) {
